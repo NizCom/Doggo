@@ -163,7 +163,7 @@ def set_goals_by_frequency(cursor, current_date, end_date, template_frequency):
         """
     create_goal_query = f"""
         INSERT INTO {GOALS_TABLE} (template_id, dog_id, target_value, category, start_date, end_date)
-        VALUES (%s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s, %s);
         """
 
     cursor.execute(get_goal_template_query, (template_frequency,))
@@ -172,4 +172,3 @@ def set_goals_by_frequency(cursor, current_date, end_date, template_frequency):
     for template in goal_templates:
         template = template + (current_date, end_date,)
         cursor.execute(create_goal_query, template)
-
