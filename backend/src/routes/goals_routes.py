@@ -251,4 +251,3 @@ def get_daily_steps_goal():
         return jsonify({"error": str(error)}), HTTP_400_BAD_REQUEST
 
     return jsonify({"daily_steps_goal": target_steps}), HTTP_200_OK
-

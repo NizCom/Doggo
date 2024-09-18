@@ -52,4 +52,3 @@ def get_all_dogs():
         return jsonify({"error": str(error)}), HTTP_400_BAD_REQUEST
 
     return jsonify(result), HTTP_200_OK
-
