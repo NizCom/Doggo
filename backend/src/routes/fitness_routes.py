@@ -1,4 +1,3 @@
-from datetime import datetime
 import psycopg2
 from flask import request, Blueprint, jsonify
 
@@ -81,14 +80,14 @@ def data_from_collar():
 def get_dog_fitness():
     dog_id = request.args.get('dog_id')
     fitness_date = datetime.strptime(request.args.get('date'), '%Y-%m-%d').date()
-    db = load_database_config()
     get_fitness_query = """
                         SELECT distance, steps, calories_burned
                         FROM {0} 
                         WHERE dog_id = %s AND fitness_date = %s;
                         """.format(FITNESS_TABLE)
-
     try:
+        db = load_database_config()
+
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, DOGS_TABLE, DOG_ID_COLUMN, dog_id)

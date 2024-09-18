@@ -13,8 +13,6 @@ def register_user():
     data = request.json
     required_data = {"email", "password", "name", "date_of_birth", "phone_number"}
 
-    email_query = "SELECT COUNT(*) FROM users WHERE email = %s"
-    phone_number_query = "SELECT COUNT(*) FROM users WHERE phone_number = %s"
     adding_new_user_query = f"""
                                 INSERT INTO {USERS_TABLE} 
                                 (email, password, name, date_of_birth, phone_number) VALUES 
@@ -27,10 +25,9 @@ def register_user():
 
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
-                if is_in_use(cursor, email_query, data.get('email')):
-                    raise Exception("Email is already in use.")
-                elif is_in_use(cursor, phone_number_query, data.get('phone_number')):
-                    raise Exception("Phone number is already in use.")
+                check_email(cursor, data.get('email'))
+                check_phone_number(cursor, data.get('phone_number'))
+                check_date_of_birth(data.get('date_of_birth'))
                 data['password'] = generate_password_hash(data['password'])
                 cursor.execute(adding_new_user_query, data)
                 user_id = cursor.fetchone()[0]
@@ -83,11 +80,12 @@ def login():
 @user_routes.route('/api/user/logout', methods=['PUT'])
 def logout():
     user_id = request.args.get('user_id')
-    db = load_database_config()
     logging_out_query = """ UPDATE {0}
                         SET last_activity = NOW(), logged_in = FALSE
                         WHERE user_id = %s; """.format(USERS_TABLE)
     try:
+        db = load_database_config()
+
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, USERS_TABLE, USER_ID_COLUMN, user_id)

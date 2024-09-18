@@ -1,5 +1,7 @@
+import psycopg2
 from flask import Blueprint, request, jsonify
 
+from src.utils.config import load_database_config
 from src.utils.helpers import *
 
 favorite_places_routes = Blueprint('favorite_places_routes', __name__)

@@ -1,4 +1,3 @@
-from datetime import datetime
 import psycopg2
 from flask import Blueprint, request, jsonify
 
@@ -14,7 +13,6 @@ def get_dog_activities_list():
     limit = request.args.get('limit', type=int)  # Number of activities to retrieve
     offset = request.args.get('offset', type=int)  # Number of activities to skip
 
-    db = load_database_config()
     get_dog_activities_query = f"""
             SELECT 
             activity_id, activity_type, calories_burned, distance, 
@@ -27,6 +25,8 @@ def get_dog_activities_list():
             """
 
     try:
+        db = load_database_config()
+
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, DOGS_TABLE, DOG_ID_COLUMN, dog_id)
@@ -155,5 +155,3 @@ def delete_dog_activity():
         return jsonify({"error": str(error)}), HTTP_400_BAD_REQUEST
 
     return "Activity was deleted successfully.", HTTP_200_OK
-
-

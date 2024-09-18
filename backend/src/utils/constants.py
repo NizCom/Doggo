@@ -16,6 +16,7 @@ GOAL_TEMPLATES_TABLE = "goal_templates"
 ACTIVITIES_TABLE = "activities"
 FAVORITE_PLACES_TABLE = "favorite_places"
 NOTIFICATIONS_TABLE = "notifications"
+FRIENDS_TABLE = "friends"
 
 # Columns
 USER_ID_COLUMN = "user_id"
@@ -54,3 +55,5 @@ DISTANCE_CATEGORY = "distance"
 CALORIES_BURNED_CATEGORY = "calories_burned"
 SUNDAY = 6
 FIRST_OF_MONTH = 1
+APP_MIN_AGE = 8
+DAYS_IN_YEAR = 365

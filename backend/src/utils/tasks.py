@@ -1,4 +1,3 @@
-import os
 import time
 from datetime import timedelta, datetime
 from threading import Thread

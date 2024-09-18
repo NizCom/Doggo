@@ -148,4 +148,3 @@ def disconnect_collar():
         return jsonify({"error": str(error)}), 400
 
     return "", HTTP_200_OK
-

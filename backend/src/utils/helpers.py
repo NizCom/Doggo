@@ -1,3 +1,4 @@
+import re
 from calendar import monthrange
 from datetime import date, timedelta, datetime
 
@@ -573,3 +574,42 @@ def get_beginning_next_month(current_date):
         beginning_next_month = current_date.replace(day=1, month=current_date.month + 1)
 
     return beginning_next_month
+
+
+def is_valid_email(email):
+    email_pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+
+    return re.match(email_pattern, email) is not None
+
+
+def check_email(cursor, email):
+    email_query = "SELECT COUNT(*) FROM users WHERE email = %s"
+
+    if is_in_use(cursor, email_query, email):
+        raise Exception("Email is already in use.")
+    elif is_valid_email(email):
+        raise Exception("Email is invalid.")
+
+
+def is_valid_phone_number(phone_number):
+    phone_pattern = r'^\+?[\d\s\-()]{7,15}$'
+
+    return re.match(phone_pattern, phone_number) is not None
+
+
+def check_phone_number(cursor, phone_number):
+    phone_number_query = "SELECT COUNT(*) FROM users WHERE phone_number = %s"
+
+    if is_in_use(cursor, phone_number_query, phone_number):
+        raise Exception("Phone number is already in use.")
+    elif is_valid_phone_number(phone_number):
+        raise Exception("Phone number is invalid.")
+
+
+def check_date_of_birth(date_of_birth_input):
+    date_of_birth = datetime.strptime(date_of_birth_input, "%Y-%m-%d")
+    current_date = datetime.now()
+    min_date_of_birth = current_date - timedelta(days=APP_MIN_AGE * DAYS_IN_YEAR)  # Since age of 8
+
+    if date_of_birth <= current_date and date_of_birth <= min_date_of_birth:
+        raise Exception("Date of birth must be at least {0} years old.".format(APP_MIN_AGE))

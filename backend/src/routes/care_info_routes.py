@@ -1,3 +1,4 @@
+import psycopg2
 from flask import Blueprint, request, jsonify
 
 from src.utils.config import load_database_config
@@ -63,7 +64,6 @@ def get_dog_vet():
 @care_info_routes.route('/api/dog/pension', methods=['PUT'])
 def add_dog_pension():
     data = request.json
-    db = load_database_config()
     dog_id = data.get("dog_id")
     update_dog_pension_query = f""" UPDATE {CARE_INFO_TABLE}
                                    SET pension_name = %(pension_name)s, pension_phone = %(pension_phone)s,
@@ -77,6 +77,8 @@ def add_dog_pension():
                                     """
 
     try:
+        db = load_database_config()
+
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, DOGS_TABLE, DOG_ID_COLUMN, dog_id)
@@ -98,9 +100,10 @@ def get_dog_pension():
     dog_id = request.args.get('dog_id')
     get_pension_query = f""" SELECT pension_name, pension_phone, pension_latitude, pension_longitude
                                  FROM {CARE_INFO_TABLE} WHERE {DOG_ID_COLUMN} = %s; """
-    db = load_database_config()
 
     try:
+        db = load_database_config()
+
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, DOGS_TABLE, DOG_ID_COLUMN, dog_id)
@@ -121,9 +124,10 @@ def get_dog_care_info():
     get_dog_care_info_query = """ SELECT *
                                 FROM {0}
                                 WHERE {1} = %s; """.format(CARE_INFO_TABLE, DOG_ID_COLUMN)
-    db = load_database_config()
 
     try:
+        db = load_database_config()
+
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, DOGS_TABLE, DOG_ID_COLUMN, dog_id)
@@ -135,4 +139,3 @@ def get_dog_care_info():
         return jsonify({"error": str(error)}), HTTP_400_BAD_REQUEST
 
     return jsonify(res), HTTP_200_OK
-
