@@ -252,70 +252,6 @@ def check_for_active_activity(cursor, dog_id):
         raise ActiveActivityExistsError()
 
 
-def remove_dog_from_data_tables(cursor, dog_id):
-    remove_dog_from_table(cursor, dog_id, ACTIVITIES_TABLE)
-    remove_dog_from_table(cursor, dog_id, CARE_INFO_TABLE)
-    remove_dog_from_table(cursor, dog_id, FITNESS_TABLE)
-    remove_dog_from_table(cursor, dog_id, GOALS_TABLE)
-    remove_dog_from_table(cursor, dog_id, MEDICAL_RECORDS_TABLE)
-    remove_dog_from_table(cursor, dog_id, NUTRITION_TABLE)
-    remove_dog_from_table(cursor, dog_id, VACCINATIONS_TABLE)
-    remove_dog_from_table(cursor, dog_id, FAVORITE_PLACES_TABLE)
-    remove_dog_from_table(cursor, dog_id, GOAL_TEMPLATES_TABLE)
-    remove_dog_from_table(cursor, dog_id, USERS_DOGS_TABLE)
-
-
-def remove_dog_from_table(cursor, dog_id, table):
-    delete_activities_query = f"DELETE FROM {table} WHERE {DOG_ID_COLUMN} = %s"
-    cursor.execute(delete_activities_query, (dog_id,))
-
-# def remove_dog_from_activities_table(cursor, dog_id):
-#     delete_activities_query = f"DELETE FROM {ACTIVITIES_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_activities_query, (dog_id,))
-#
-#
-# def remove_dog_from_care_info_table(cursor, dog_id):
-#     delete_care_info_query = f"DELETE FROM {CARE_INFO_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_care_info_query, (dog_id,))
-#
-#
-# def remove_dog_from_fitness_table(cursor, dog_id):
-#     delete_fitness_query = f"DELETE FROM {FITNESS_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_fitness_query, (dog_id,))
-#
-#
-# def remove_dog_from_goals_table(cursor, dog_id):
-#     delete_goals_query = f"DELETE FROM {GOALS_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_goals_query, (dog_id,))
-#
-#
-# def remove_dog_from_medical_records_table(cursor, dog_id):
-#     delete_medical_records_query = f"DELETE FROM {MEDICAL_RECORDS_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_medical_records_query, (dog_id,))
-#
-#
-# def remove_dog_from_nutrition_table(cursor, dog_id):
-#     delete_nutrition_query = f"DELETE FROM {NUTRITION_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_nutrition_query, (dog_id,))
-#
-#
-# def remove_dog_from_vaccinations_table(cursor, dog_id):
-#     delete_vaccinations_query = f"DELETE FROM {VACCINATIONS_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_vaccinations_query, (dog_id,))
-#
-#
-# def remove_dog_from_users_dogs_table(cursor, dog_id):
-#     delete_users_dogs_query = f"DELETE FROM {USERS_DOGS_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_users_dogs_query, (dog_id,))
-#
-#
-# def remove_dog_from_favorites_table(cursor, dog_id):
-#     delete_favorites_query = f"DELETE FROM {FAVORITE_PLACES_TABLE} WHERE {DOG_ID_COLUMN} = %s"
-#     cursor.execute(delete_favorites_query, (dog_id,))
-
-
-
-
 def fix_steps_before_create(cursor, dog_id, new_steps):
     last_steps = load_last_steps(cursor, dog_id)
 
@@ -385,7 +321,7 @@ def delete_user_dogs(cursor, user_id):
 
     for dog in dogs:
         dog_id = dog[0]
-        remove_dog_from_data_tables(cursor, dog_id)
+        disconnect_dog_from_collar(cursor, dog_id)
         cursor.execute(delete_dog_query, (dog_id,))
 
 
@@ -587,7 +523,7 @@ def check_email(cursor, email):
 
     if is_in_use(cursor, email_query, email):
         raise Exception("Email is already in use.")
-    elif is_valid_email(email):
+    elif not is_valid_email(email):
         raise Exception("Email is invalid.")
 
 
@@ -602,7 +538,7 @@ def check_phone_number(cursor, phone_number):
 
     if is_in_use(cursor, phone_number_query, phone_number):
         raise Exception("Phone number is already in use.")
-    elif is_valid_phone_number(phone_number):
+    elif not is_valid_phone_number(phone_number):
         raise Exception("Phone number is invalid.")
 
 
@@ -611,5 +547,15 @@ def check_date_of_birth(date_of_birth_input):
     current_date = datetime.now()
     min_date_of_birth = current_date - timedelta(days=APP_MIN_AGE * DAYS_IN_YEAR)  # Since age of 8
 
-    if date_of_birth <= current_date and date_of_birth <= min_date_of_birth:
+    if date_of_birth >= min_date_of_birth:
         raise Exception("Date of birth must be at least {0} years old.".format(APP_MIN_AGE))
+
+
+def disconnect_dog_from_collar(cursor, dog_id):
+    remove_dog_from_collar_query = f"""
+        UPDATE {COLLARS_TABLE}
+        SET {DOG_ID_COLUMN} = NULL
+        WHERE {DOG_ID_COLUMN} = %s;
+        """
+
+    cursor.execute(remove_dog_from_collar_query, (dog_id, ))

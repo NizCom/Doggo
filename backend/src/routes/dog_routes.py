@@ -98,7 +98,7 @@ def update_dog_info():
 @dog_routes.route('/api/dog/profile', methods=['DELETE'])
 def delete_dog():
     dog_id = request.args.get('dog_id')
-    delete_dog_query = "DELETE FROM {0} WHERE dog_id = %s;".format(DOGS_TABLE)
+    delete_dog_query = f"DELETE FROM {DOGS_TABLE} WHERE dog_id = %s;"
 
     try:
         db = load_database_config()
@@ -106,7 +106,7 @@ def delete_dog():
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, DOGS_TABLE, DOG_ID_COLUMN, dog_id)
-                remove_dog_from_data_tables(cursor, dog_id)
+                disconnect_dog_from_collar(cursor, dog_id)
                 cursor.execute(delete_dog_query, (dog_id,))
                 connection.commit()
     except(Exception, ValueError, psycopg2.DatabaseError) as error:

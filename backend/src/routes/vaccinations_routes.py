@@ -13,7 +13,7 @@ def get_dog_vaccinations_list():
     limit = request.args.get("limit", type=int)  # Number of activities to retrieve
     offset = request.args.get("offset", type=int)  # Number of activities to skip
     vaccination_type = request.args.get("vaccination_type")
-    print(vaccination_type)
+
     get_dog_vaccinations_query = f"""
     SELECT vaccination_id, vaccination_date, vaccination_type, dosage, vet_name, next_vaccination, notes
     FROM {VACCINATIONS_TABLE}
