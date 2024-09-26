@@ -77,6 +77,7 @@ Doggo comes with a compact attachment that easily fits onto your dog's collar or
 ### Prerequisites
 Before you begin, ensure you have met the following requirements:
 
+* Python 3.x
 * Docker: Installed and running
 * AWS CLI (if deploying to AWS)
 
@@ -96,6 +97,26 @@ To run the container and expose the app on port 5000:
 docker run -d -p 5000:5000 niznaor/doggo-app:latest
 ```
 This command will start the Flask application inside a Docker container, and you can access it at http://localhost:5000.
+
+### Environment Variables
+To manage your application's configuration securely, you'll need to set environment variables using a `.env` file. This file should contain your database connection details and any other sensitive information.
+
+#### Creating a .env File Locally
+#### 1. Create a file named `.env` in the root directory of your project.
+#### 2. Add the following environment variables to the `.env` file:
+```bash
+DB_HOST=<your_db_host>
+DB_PORT=<your_db_port>
+DB_NAME=<your_db_name>
+DB_USER=<your_db_user>
+DB_PASSWORD=<your_db_password>
+```
+Replace the placeholders with your actual database connection details.
+#### 3. Run the Docker container with the `.env` file mounted:
+```bash
+docker run -d --rm --name doggo-app -p 5000:5000 --env-file .env niznaor/doggo-app:latest
+```
+
 
 ### Deployment on AWS EC2 (Optional)
 If you want to deploy the Docker container to AWS EC2:
