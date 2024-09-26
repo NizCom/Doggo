@@ -113,7 +113,8 @@ def is_collar_available():
 def get_collar_connection():
     collar_id = request.args.get('collar_id')
 
-    get_collar_connection_query = f"SELECT ble_connected, wifi_connected FROM {COLLARS_TABLE} WHERE {COLLAR_ID_COLUMN} = %s;"
+    get_collar_connection_query = f"SELECT ble_connected, wifi_connected FROM {COLLARS_TABLE} " \
+                                  f"WHERE {COLLAR_ID_COLUMN} = %s;"
 
     try:
         db = load_database_config()

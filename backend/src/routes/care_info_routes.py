@@ -131,7 +131,7 @@ def get_dog_care_info():
         with psycopg2.connect(**db) as connection:
             with connection.cursor() as cursor:
                 check_if_exists(cursor, DOGS_TABLE, DOG_ID_COLUMN, dog_id)
-                if not does_exist(cursor,CARE_INFO_TABLE, DOG_ID_COLUMN, dog_id):
+                if not does_exist(cursor, CARE_INFO_TABLE, DOG_ID_COLUMN, dog_id):
                     return '', HTTP_204_STATUS_NO_CONTENT
                 cursor.execute(get_dog_care_info_query, (dog_id,))
                 res = get_dict_for_response(cursor)
