@@ -54,7 +54,10 @@ jobs:
   
         # Stop and remove the old container if it exists
         docker ps -q -f name=doggo-app && docker stop doggo-app && docker rm doggo-app || echo "No running container found with the name doggo-app"
-  
+
+        # Ensure port 5000 is free
+        sudo fuser -k 5000/tcp || echo "Port 5000 is free"
+        
         # Pull the new Docker image from Docker Hub
         docker pull niznaor/doggo-app:${{ env.TAG }}
   
