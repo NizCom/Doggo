@@ -62,5 +62,5 @@ jobs:
         docker pull niznaor/doggo-app:${{ env.TAG }}
   
         # Run the new container with the .env file mounted
-        docker run -d --rm --name doggo-app -p 5000:5000 -v /home/ec2-user/app/.env:/app/.env niznaor/doggo-app:${{ env.TAG }}
+        docker run -d --name doggo-app -p 5000:5000 -v /home/ec2-user/app/.env:/app/.env niznaor/doggo-app:${{ env.TAG }}
         EOF
