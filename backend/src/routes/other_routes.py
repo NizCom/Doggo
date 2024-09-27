@@ -10,7 +10,7 @@ other_routes = Blueprint('other_routes', __name__)
 @other_routes.route("/", methods=['GET'])
 def health_check():
     db = load_database_config()
-    return "Hello dogs world !!!"
+    return "Hello Shir!"
 
 
 @other_routes.route("/api/user/all", methods=['GET'])
