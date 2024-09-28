@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile/common_widgets/round_gradient_button.dart';
 import 'package:mobile/common_widgets/date_selector.dart';
 import 'package:mobile/services/http_service.dart';
@@ -25,7 +26,6 @@ class AddUpdateVaccinationScreen extends StatefulWidget {
 
 class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _vaccinationTypeController = TextEditingController();
   final TextEditingController _vetNameController = TextEditingController();
   final TextEditingController _dosageController = TextEditingController();
@@ -34,15 +34,20 @@ class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen>
   final TextEditingController _nextVaccinationController = TextEditingController();
 
   DateTime? _selectedVaccinationDate; // Store the selected vaccination date
+  DateTime? _selectedNextVaccinationDate; // Store the selected next vaccination date
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     if (widget.isUpdate && widget.vaccination != null) {
       _loadVaccination();
     }
   }
-
   @override
   void dispose() {
     _vaccinationTypeController.dispose();
@@ -54,19 +59,40 @@ class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen>
     super.dispose();
   }
 
-  Future<void> _loadVaccination() async {
+  DateTime? parseCustomDate(String dateString) {
+    try {
+      // Define the expected format
+      final formatter = DateFormat("EEE, dd MMM yyyy HH:mm:ss");
+      return formatter.parse(dateString);
+    } catch (e) {
+      print('Error parsing date: $e');
+      return null; // or handle it accordingly
+    }
+  }
+
+  void _loadVaccination() async {
     try {
       // Load vaccination details into the controllers
       _vaccinationTypeController.text = widget.vaccination['vaccination_type'] ?? '';
       _vetNameController.text = widget.vaccination['vet_name'] ?? '';
       _dosageController.text = widget.vaccination['dosage']?.toString() ?? '';
       _notesController.text = widget.vaccination['notes'] ?? '';
-      _vaccinationDateController.text = widget.vaccination['vaccination_date'] ?? '';
-      _nextVaccinationController.text = widget.vaccination['next_vaccination'] ?? '';
 
-      // Initialize the selected vaccination date if updating
-      if (widget.vaccination['vaccination_date'] != null) {
-        _selectedVaccinationDate = DateTime.parse(widget.vaccination['vaccination_date']);
+      // Parse vaccination date with the custom format
+      final vaccinationDateString = widget.vaccination['vaccination_date'];
+      if (vaccinationDateString != null) {
+        _selectedVaccinationDate = parseCustomDate(vaccinationDateString);
+        if (_selectedVaccinationDate != null) {
+          _vaccinationDateController.text = DateFormat('yyyy-MM-dd').format(_selectedVaccinationDate!);
+        }
+      }
+
+      final nextVaccinationDateString = widget.vaccination['next_vaccination'];
+      if(nextVaccinationDateString != null) {
+        _selectedNextVaccinationDate = parseCustomDate(nextVaccinationDateString);
+        if(_selectedNextVaccinationDate != null) {
+          _nextVaccinationController.text = DateFormat('yyyy-MM-dd').format(_selectedNextVaccinationDate!);
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -77,16 +103,28 @@ class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen>
     }
   }
 
+
+
   Future<void> _saveVaccination() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Capitalize the first letter of the vaccination type
         final vaccinationType = _vaccinationTypeController.text.isNotEmpty
             ? '${_vaccinationTypeController.text[0].toUpperCase()}${_vaccinationTypeController.text.substring(1)}'
             : '';
 
+        // Check if the next vaccination date is after the vaccination date
+        if (_nextVaccinationController.text.isNotEmpty && _selectedVaccinationDate != null) {
+          final nextVaccinationDate = DateTime.parse(_nextVaccinationController.text);
+          if (nextVaccinationDate.isBefore(_selectedVaccinationDate!)) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Next Vaccination Date must be after Vaccination Date.')),
+            );
+            return;
+          }
+        }
+
         final vaccinationData = {
-          'vaccination_type': vaccinationType, // Use the capitalized vaccination type
+          'vaccination_type': vaccinationType,
           'vet_name': _vetNameController.text,
           'dosage': _dosageController.text,
           'notes': _notesController.text,
@@ -95,12 +133,10 @@ class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen>
         };
 
         if (widget.isUpdate) {
-          // Add vaccination ID to the vaccinationData
-          vaccinationData['vaccination_id'] = widget.vaccination['vaccination_id'].toString(); // Ensure it's a string
+          vaccinationData['vaccination_id'] = widget.vaccination['vaccination_id'].toString();
           await HttpService.updateVaccination(vaccinationData);
         } else {
-          // Add dog ID to the vaccinationData
-          vaccinationData['dog_id'] = widget.dogId.toString(); // Ensure it's a string
+          vaccinationData['dog_id'] = widget.dogId.toString();
           await HttpService.createNewVaccination(vaccinationData);
         }
 
@@ -190,7 +226,7 @@ class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen>
                   dateController: _nextVaccinationController,
                   hintText: 'Next Vaccination Date',
                   initialDate: _selectedVaccinationDate ?? DateTime.now(),
-                  firstDate: _selectedVaccinationDate ?? DateTime.now(), // Make sure first date is from selected vaccination date
+                  firstDate: _selectedVaccinationDate ?? DateTime.now(),
                   lastDate: DateTime(2101),
                 ),
                 const SizedBox(height: 16),
@@ -208,24 +244,16 @@ class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen>
     required String label,
     required IconData icon,
     int maxLines = 1,
-    bool readOnly = false,
-    VoidCallback? onTap,
     String? Function(String?)? validator,
   }) {
     return TextFormField(
       controller: controller,
+      maxLines: maxLines,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        filled: true,
-        fillColor: Colors.grey[200],
+        border: const OutlineInputBorder(),
       ),
-      maxLines: maxLines,
-      readOnly: readOnly,
-      onTap: onTap,
       validator: validator,
     );
   }
