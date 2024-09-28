@@ -8,7 +8,7 @@ class DateSelector extends StatelessWidget {
   final DateTime initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
-  final void Function(DateTime)? onDateSelected; // Nullable callback
+  final void Function(DateTime)? onDateSelected;
 
   const DateSelector({
     super.key,
@@ -17,7 +17,7 @@ class DateSelector extends StatelessWidget {
     required this.initialDate,
     required this.firstDate,
     required this.lastDate,
-    this.onDateSelected, // Optional parameter
+    this.onDateSelected,
   });
 
   Future<void> _selectDate(BuildContext context) async {
@@ -30,7 +30,6 @@ class DateSelector extends StatelessWidget {
     if (picked != null) {
       dateController.text = DateFormat('yyyy-MM-dd').format(picked);
 
-      // Call the onDateSelected callback if it's provided
       if (onDateSelected != null) {
         onDateSelected!(picked);
       }
