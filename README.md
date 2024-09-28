@@ -15,7 +15,7 @@
     <br />
     <a href="documents/Doggo Project Design.pdf"><strong>Explore the project design »</strong></a>
     <br />
-    <a href="https://qr-code.click/i/p/66db5a8daeaf1">View Demo</a>
+    <a href="https://www.youtube.com/shorts/FFmWcAM7MnY">View Demo</a>
   </p>
 </div>
 
