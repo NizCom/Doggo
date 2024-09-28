@@ -64,12 +64,12 @@ class _FoodNutritionScreenState extends State<FoodNutritionScreen> {
         }
       }
     } catch (e) {
-      print('Error fetching nutrition data: $e');
       _resetNutritionData();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error fetching nutrition data. Please try again later.')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error fetching nutrition data. Please try again later.')),
+        );
+      }
     }
   }
 
@@ -117,15 +117,18 @@ class _FoodNutritionScreenState extends State<FoodNutritionScreen> {
           _foodAmountGramsError = null;
           _dailySnacksError = null;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Dog nutrition updated successfully")),
-        );
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Dog nutrition updated successfully")),
+          );
+        }
       }
     } catch (e) {
-      print('Failed to update nutrition: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update dog nutrition: ${e.toString()}")),
-      );
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to update dog nutrition: ${e.toString()}")),
+        );
+      }
     }
   }
 

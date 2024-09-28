@@ -53,13 +53,13 @@ class TitleSubtitleCell extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 4), // Optional space between title and subtitle
+          const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (icon != null) ...[
                 Icon(icon, size: subtitleFontSize, color: AppColors.grayColor),
-                SizedBox(width: 4), // Space between icon and subtitle
+                const SizedBox(width: 4), // Space between icon and subtitle
               ],
               Text(
                 subtitle,

@@ -3,18 +3,13 @@ import 'package:mobile/utils/app_colors.dart';
 
 class BreedSelector extends StatelessWidget {
   final List<String> dogBreeds = [
-    // "Labrador Retriever",
-    // "German Shepherd",
-    // "Golden Retriever",
     "Bulldog",
     "Beagle",
     "Poodle",
     "Rottweiler",
-    // "Yorkshire Terrier",
     "Dachshund",
     "Boxer",
     "Shih Tzu",
-    // "Doberman Pinscher",
     "Siberian Husky",
     "Great Dane",
     "Chihuahua",
@@ -26,10 +21,10 @@ class BreedSelector extends StatelessWidget {
   final ValueChanged<String?> onBreedChanged;
 
   BreedSelector({
-    Key? key,
+    super.key,
     required this.selectedBreed,
     required this.onBreedChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

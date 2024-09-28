@@ -6,7 +6,7 @@ import 'package:mobile/main.dart';
 class FavoritePlacesList extends StatefulWidget {
   final int dogId;
 
-  const FavoritePlacesList({Key? key, required this.dogId}) : super(key: key);
+  const FavoritePlacesList({super.key, required this.dogId});
 
   @override
   _FavoritePlacesListState createState() => _FavoritePlacesListState();
@@ -51,7 +51,7 @@ class _FavoritePlacesListState extends State<FavoritePlacesList> with RouteAware
         favoritePlaces = [home, dogPark, petStore];
       });
     } catch (e) {
-      print('Failed to load favorite places: $e');
+      //Failed to load favorite places
     }
   }
 
@@ -68,7 +68,6 @@ class _FavoritePlacesListState extends State<FavoritePlacesList> with RouteAware
       return place;
     } catch (e) {
       // Handle any errors that occur during the request
-      print('Failed to get favorite place: $e');
       return {
         'place_name': 'Save your favorite $placeType',
         'address': '',

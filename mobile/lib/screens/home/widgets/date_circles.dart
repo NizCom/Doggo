@@ -5,7 +5,7 @@ import 'package:mobile/utils/common.dart';
 class DateCircles extends StatefulWidget {
   final Function(DateTime) onDateSelected;
 
-  DateCircles({Key? key, required this.onDateSelected}) : super(key: key);
+  const DateCircles({super.key, required this.onDateSelected});
 
   @override
   _DateCirclesState createState() => _DateCirclesState();

@@ -37,7 +37,6 @@ class BleService {
         }
       }
     }, onError: (error) {
-      print('Scan error: $error');
       if (!_scanCompleter!.isCompleted) {
         _scanCompleter!.completeError(error);
       }
@@ -53,15 +52,15 @@ class BleService {
       connectionTimeout: const Duration(seconds: 30),
     ).listen((connectionState) {
       if (connectionState.connectionState == DeviceConnectionState.connected) {
-        print('Connected, discovering services...');
+        //Connected, discovering services...
         isConnected = true;
         flutterReactiveBle.discoverServices(deviceId).then((_) {
-          print('Services discovered');
+          //Services discovered
           _onConnected(deviceId, onBatteryLevelRead, onStepCountRead
           );
           _startPeriodicUpdates();
         }).catchError((error) {
-          print('Error discovering services: $error');
+          //Error discovering services
           isConnected = false;
           onDeviceDisconnected(); // Notify disconnection
         });
@@ -71,14 +70,13 @@ class BleService {
         onDeviceDisconnected(); // Notify disconnection
       }
     }, onError: (error) {
-      print('Connection error: $error');
       isConnected = false;
       onDeviceDisconnected(); // Notify disconnection
     });
   }
 
   void _onConnected(String deviceId, Function(int) updateBatteryLevel, Function(int) updateStepCount) {
-    print('Attempting to read characteristics...');
+    //Attempting to read characteristics...
     final batteryCharacteristic = QualifiedCharacteristic(
       deviceId: deviceId,
       serviceId: Uuid.parse(BATTERY_SERVICE_UUID),
@@ -102,24 +100,22 @@ class BleService {
       Function(int) updateStepCount,
       ) async {
 
-    int? _dogId = await PreferencesService.getDogId();
+    int? dogId = await PreferencesService.getDogId();
 
     flutterReactiveBle.readCharacteristic(batteryCharacteristic).then((value) {
-      print('Battery value: $value');
       _batteryLevel = value[0];
       updateBatteryLevel(_batteryLevel);
-      HttpService.sendBatteryLevelToBackend(_dogId!.toString(), _batteryLevel);
+      HttpService.sendBatteryLevelToBackend(dogId!.toString(), _batteryLevel);
     }).catchError((error) {
-      print('Error reading battery characteristic: $error');
+      //Error reading battery characteristic
     });
 
     flutterReactiveBle.readCharacteristic(stepCharacteristic).then((value) {
-      print('Step value: $value');
       _stepCount = _bytesToInt(value);
       updateStepCount(_stepCount);
-      HttpService.sendStepCountToBackend(_dogId!.toString(), _stepCount);
+      HttpService.sendStepCountToBackend(dogId!.toString(), _stepCount);
     }).catchError((error) {
-      print('Error reading step characteristic: $error');
+      //Error reading step characteristic
     });
 
       }

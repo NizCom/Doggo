@@ -23,27 +23,30 @@ class _ConfigureCollarScreenState extends State<ConfigureCollarScreen> {
     try {
       final collarId = _collarIdController.text;
       final isAvailable = await HttpService.isCollarAvailable(collarId);
-      print('collar Id: $collarId is available? $isAvailable');
       if (isAvailable) {
         await HttpService.configureCollar(widget.dogId, collarId);
-        print('Collar configured successfully');
-        Navigator.pushNamed(context, BottomMenu.routeName);
+        if(mounted) {
+          Navigator.pushNamed(context, BottomMenu.routeName);
+        }
       } else { // collar already attached to another dog
-        print('Collar configuration failed');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('This collar is already attached to another dog.'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('This collar is already attached to another dog.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
 
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to configure collar: $e'),
-        ),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to configure collar: $e'),
+          ),
+        );
+      }
     }
   }
 
@@ -69,7 +72,7 @@ class _ConfigureCollarScreenState extends State<ConfigureCollarScreen> {
                       fontWeight: FontWeight.w700
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 const Text(
                   "Please enter the Collar ID below",
                   style: TextStyle(

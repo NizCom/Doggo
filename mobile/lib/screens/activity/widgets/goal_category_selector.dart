@@ -5,12 +5,12 @@ class GoalCategorySelector extends StatefulWidget {
   final ValueChanged<String> onCategoryChanged;
   final bool isReadOnly;
 
-  GoalCategorySelector({
-    Key? key,
+  const GoalCategorySelector({
+    super.key,
     required this.selectedCategory,
     required this.onCategoryChanged,
     this.isReadOnly = false,
-  }) : super(key: key);
+  });
 
   @override
   _GoalCategorySelectorState createState() => _GoalCategorySelectorState();

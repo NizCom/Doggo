@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AllCategoriesModal extends StatelessWidget {
   final Function(String) onCategorySelected;
 
-  const AllCategoriesModal({Key? key, required this.onCategorySelected}) : super(key: key);
+  const AllCategoriesModal({super.key, required this.onCategorySelected});
 
   @override
   Widget build(BuildContext context) {

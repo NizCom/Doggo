@@ -88,7 +88,13 @@ class _SignUpStep1ScreenState extends State<SignUpStep1Screen> {
                               errorText: _fullNameError,
                             ),
                             SizedBox(height: constraints.maxHeight * 0.02),
-                            DateSelector(birthdateController: _birthdateController),
+                            DateSelector(
+                              dateController: _birthdateController,
+                              hintText: "Date of Birth",
+                              initialDate: DateTime(2000, 1, 1),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                            ),
                             SizedBox(height: constraints.maxHeight * 0.02),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -135,84 +141,6 @@ class _SignUpStep1ScreenState extends State<SignUpStep1Screen> {
                               titleColor: AppColors.secondaryColor1,
                             ),
                             SizedBox(height: constraints.maxHeight * 0.04),
-                            // Google & Facebook sign up
-                            // Row(
-                            //   children: [
-                            //     Expanded(
-                            //       child: Container(
-                            //         height: 1,
-                            //         color: AppColors.grayColor.withOpacity(0.5),
-                            //       ),
-                            //     ),
-                            //     const Text(
-                            //       "  Or  ",
-                            //       style: TextStyle(
-                            //         color: AppColors.grayColor,
-                            //         fontSize: 12,
-                            //         fontWeight: FontWeight.w400,
-                            //       ),
-                            //     ),
-                            //     Expanded(
-                            //       child: Container(
-                            //         height: 1,
-                            //         color: AppColors.grayColor.withOpacity(0.5),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // const SizedBox(height: 20),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   children: [
-                            //     GestureDetector(
-                            //       onTap: () {
-                            //         // Handle Google login
-                            //       },
-                            //       child: Container(
-                            //         width: 50,
-                            //         height: 50,
-                            //         alignment: Alignment.center,
-                            //         decoration: BoxDecoration(
-                            //           color: Colors.white,
-                            //           borderRadius: BorderRadius.circular(14),
-                            //           border: Border.all(
-                            //             color: AppColors.secondaryColor1.withOpacity(0.5),
-                            //             width: 1,
-                            //           ),
-                            //         ),
-                            //         child: Image.asset(
-                            //           "assets/icons/google_icon.png",
-                            //           width: 20,
-                            //           height: 20,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     const SizedBox(width: 30),
-                            //     GestureDetector(
-                            //       onTap: () {
-                            //         // Handle Facebook login
-                            //       },
-                            //       child: Container(
-                            //         width: 50,
-                            //         height: 50,
-                            //         alignment: Alignment.center,
-                            //         decoration: BoxDecoration(
-                            //           color: Colors.white,
-                            //           borderRadius: BorderRadius.circular(14),
-                            //           border: Border.all(
-                            //             color: AppColors.secondaryColor1.withOpacity(0.5),
-                            //             width: 1,
-                            //           ),
-                            //         ),
-                            //         child: Image.asset(
-                            //           "assets/icons/facebook_icon.png",
-                            //           width: 20,
-                            //           height: 20,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
                             const SizedBox(height: 20),
                             TextButton(
                               onPressed: () {

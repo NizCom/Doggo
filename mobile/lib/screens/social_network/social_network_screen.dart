@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class SocialNetworkScreen extends StatelessWidget {
   static String routeName = "/SocialNetworkScreen";
 
+  const SocialNetworkScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

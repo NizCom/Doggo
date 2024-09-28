@@ -50,10 +50,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       try {
         bool isLoggedIn = await HttpService.isLoggedIn(userId);  // Check if logged in
         if (isLoggedIn) {
-          Navigator.pushReplacementNamed(context, BottomMenu.routeName);  // Navigate to BottomMenu
+          if(mounted) {
+            Navigator.pushReplacementNamed(context, BottomMenu.routeName);  // Navigate to BottomMenu
+          }
         }
       } catch (e) {
-        print('Error checking login status: $e');
+        //Error checking login status
       }
     }
   }

@@ -46,14 +46,13 @@ class _DoggoCollarScreenState extends State<DoggoCollarScreen> {
           _updateLastUpdateTime();
         });
       } else {
-        print('Dog ID is null');
+        // Dog ID is null
         setState(() {
           _collarId = 'Error retrieving collar ID';
           _updateLastUpdateTime();
         });
       }
     } catch (e) {
-      print(e);
       setState(() {
         _collarId = 'Error retrieving collar ID';
         _updateLastUpdateTime();
@@ -71,7 +70,6 @@ class _DoggoCollarScreenState extends State<DoggoCollarScreen> {
         });
       }
     } catch (e) {
-      print(e);
       setState(() {
         _batteryLevel = 'Error retrieving collar battery level';
         _updateLastUpdateTime();
@@ -99,7 +97,6 @@ class _DoggoCollarScreenState extends State<DoggoCollarScreen> {
         });
       }
     } catch (e) {
-      print(e);
       setState(() {
         _connectionStatus = 'Error retrieving collar connection status';
         _updateLastUpdateTime();

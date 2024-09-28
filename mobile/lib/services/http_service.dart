@@ -28,7 +28,7 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('user $userId logged out!');
+      //user $userId logged out!
       return jsonDecode(response.body);
     } else {
       throw Exception(jsonDecode(response.body)['error']);
@@ -50,10 +50,10 @@ class HttpService {
     );
 
     if (response.statusCode == 201) {
-      print('Register completed');
+      //Register completed
       return jsonDecode(response.body);
     } else {
-      print('Register error');
+      //Register error
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -67,10 +67,10 @@ class HttpService {
 
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
-      print('User $userId connection status: ${responseData['user_connection']}');
+      //User $userId connection status: ${responseData['user_connection']}'
       return responseData['user_connection'] ?? false;
     } else {
-      print('Failed to check user connection status. Status code: ${response.statusCode}');
+      //Failed to check user connection status. Status code: ${response.statusCode}'
       return false;
     }
   }
@@ -124,9 +124,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('collar $collarId configured to dog $dogId');
+      //collar $collarId configured to dog $dogId
     } else {
-      print('failed to configure collar $collarId to dog $dogId');
+      //failed to configure collar $collarId to dog $dogId'
       throw Exception(jsonDecode(response.body)['error']);
     }
 
@@ -146,7 +146,7 @@ class HttpService {
     }
   }
 
-  static Future<void> updateUserProfile(int userId, String email, String password, String name, DateTime dateOfBirth, String phoneNumber) async {
+  static Future<void> updateUserProfile(int userId, String email, String password, String name, String formattedDateOfBirth, String phoneNumber) async {
     final url = Uri.parse('$baseUrl/api/user/profile');
     final response = await http.put(
       url,
@@ -156,15 +156,15 @@ class HttpService {
         'email': email,
         'password': password,
         'name': name,
-        'date_of_birth': "${dateOfBirth.day.toString().padLeft(2, '0')}.${dateOfBirth.month.toString().padLeft(2, '0')}.${dateOfBirth.year}",
+        'date_of_birth': formattedDateOfBirth,
         'phone_number': phoneNumber,
       }),
     );
 
     if (response.statusCode == 200) {
-      print('User profile updated successfully');
+      //User profile updated successfully
     } else {
-      print('Failed to update user profile: ${response.statusCode}');
+      //Failed to update user profile: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
 
@@ -185,7 +185,6 @@ class HttpService {
   }
 
   static Future<void> updateDogProfile(int dogId, String name, String breed, String gender, String dateOfBirth, double weight, int height, String description) async {
-    print(dateOfBirth);
     final url = Uri.parse('$baseUrl/api/dog/profile');
     final response = await http.put(
       url,
@@ -204,9 +203,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('Dog profile updated successfully');
+      //Dog profile updated successfully'
     } else {
-      print('Failed to update dog profile: ${response.statusCode}');
+      //Failed to update dog profile: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
 
@@ -257,7 +256,6 @@ class HttpService {
   //--------------------------------------favorite places--------------------------------------
   static Future<void> setFavoritePlace(String dogId, String placeName, double placeLatitude, double placeLongitude, String address, String placeType) async {
     final url = Uri.parse('$baseUrl/api/favorite_places');
-    print('$placeLatitude, $placeLongitude');
 
     final response = await http.put(
       url,
@@ -273,9 +271,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('favorite place was set successfully');
+      //favorite place was set successfully
     } else {
-      print('Failed to set favorite place: ${response.statusCode}');
+      //Failed to set favorite place: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -305,9 +303,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('Step count updated successfully');
+      //Step count updated successfully
     } else {
-      print('Failed to update step count: ${response.statusCode}');
+      //Failed to update step count
     }
   }
 
@@ -319,9 +317,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('Battery level updated successfully');
+      //Battery level updated successfully
     } else {
-      print('Failed to update battery level: ${response.statusCode}');
+      //Failed to update battery level: ${response.statusCode}
     }
   }
 
@@ -368,7 +366,6 @@ class HttpService {
   }
 
   static Future<bool> isCollarAvailable(String collarId) async {
-    print(collarId);
     final url = Uri.parse('$baseUrl/api/collar/availability?collar_id=$collarId');
     final response = await http.get(
       url,
@@ -430,7 +427,6 @@ class HttpService {
 
   static Future<void> addUpdatePension(int dogId, String pensionName, String pensionPhone, double pensionLatitude, double pensionLongitude) async{
     final url = Uri.parse('$baseUrl/api/dog/pension');
-    print('in http service update pension: ${dogId.toString()}, $pensionName, $pensionPhone, $pensionLatitude, $pensionLongitude');
     final response = await http.put(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -444,9 +440,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('Dog pension updated successfully');
+      //Dog pension updated successfully
     } else {
-      print('Failed to update dog pension: ${response.statusCode}');
+      //Failed to update dog pension: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -483,9 +479,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('Dog vet updated successfully');
+      //Dog vet updated successfully
     } else {
-      print('Failed to update dog vet: ${response.statusCode}');
+      //Failed to update dog vet: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -499,8 +495,7 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
-      return  jsonDecode(response.body);
+      return jsonDecode(response.body);
     } else {
       throw Exception(jsonDecode(response.body)['error']);
     }
@@ -535,9 +530,9 @@ class HttpService {
     );
 
     if (response.statusCode == 201) {
-      print('New record created');
+      //New record created
     } else {
-      print('Failed to create new record: ${response.statusCode}');
+      //Failed to create new record: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -554,9 +549,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('Record updated successfully');
+      //Record updated successfully
     } else {
-      print('Failed to update medical record $recordId: ${response.statusCode}');
+      //Failed to update medical record $recordId: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -571,7 +566,7 @@ class HttpService {
     if (response.statusCode == 200) {
       return;
     } else {
-      print('Failed to delete medical record $recordId: ${response.statusCode}');
+      //Failed to delete medical record $recordId: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -586,6 +581,79 @@ class HttpService {
     if (response.statusCode == 200) {
       return  jsonDecode(response.body);
     } else {
+      throw Exception(jsonDecode(response.body)['error']);
+    }
+  }
+
+  //--------------------------------------vaccinations--------------------------------------
+  static Future<List<Map<String, dynamic>>?> getVaccinationsByType(int dogId, String vaccinationType, int limit, int offset) async {
+    final url = Uri.parse('$baseUrl/api/dog/vaccinations?dog_id=$dogId&vaccination_type=$vaccinationType&limit=$limit&offset=$offset');
+    final response = await http.get(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> decodedData = jsonDecode(response.body);
+      return decodedData.cast<Map<String, dynamic>>();
+    } else if(response.statusCode == 204) {
+      return null;
+    } else {
+      //Failed to get dog vaccinations: ${response.statusCode}
+      throw Exception(jsonDecode(response.body)['error']);
+    }
+  }
+
+  static Future<void> createNewVaccination(Map<String, dynamic> newVaccination) async {
+    final url = Uri.parse('$baseUrl/api/dog/vaccinations');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(newVaccination)
+    );
+
+    print (response.statusCode);
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      //Failed to create dog vaccination: ${response.statusCode}
+      throw Exception(jsonDecode(response.body)['error']);
+    }
+  }
+
+  static Future<void> updateVaccination(Map<String, dynamic> updatedVaccination) async {
+    final url = Uri.parse('$baseUrl/api/dog/vaccinations');
+    final response = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(updatedVaccination)
+    );
+
+    print('****************');
+    print(response.statusCode);
+    print('****************');
+
+    if (response.statusCode == 200) {
+      //Dog vaccination updated successfully
+      return;
+    } else {
+      print(jsonDecode(response.body)['error']);
+      //Failed to update dog vaccination: ${response.statusCode}
+      throw Exception(jsonDecode(response.body)['error']);
+    }
+  }
+
+  static Future<void> deleteVaccination(int vaccinationId) async {
+    final url = Uri.parse('$baseUrl/api/dog/vaccinations?vaccination_id=$vaccinationId');
+    final response = await http.delete(
+        url,
+        headers: {'Content-Type': 'application/json'}
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      //Failed to delete vaccination $vaccinationId: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -609,7 +677,6 @@ class HttpService {
 
   static Future<void> addUpdateNutrition(int dogId, String foodBrand, String foodType, int foodAmountGrams, int dailySnacks, String notes) async {
     final url = Uri.parse('$baseUrl/api/dog/nutrition');
-    print('in http service update nutrition: ${dogId.toString()}, $foodBrand, $foodType, ${foodAmountGrams.toString()}, ${dailySnacks.toString()}');
     final response = await http.put(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -624,9 +691,9 @@ class HttpService {
     );
 
     if (response.statusCode == 201) {
-      print('Dog nutrition updated successfully');
+      //Dog nutrition updated successfully
     } else {
-      print('Failed to update dog nutrition: ${response.statusCode}');
+      //Failed to update dog nutrition: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -645,13 +712,12 @@ class HttpService {
     } else if(response.statusCode == 204) {
       return null;
     } else {
-      print('Failed to get dog activities: ${response.statusCode}');
+      //Failed to get dog activities: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
 
   static Future<Map<String,dynamic>> getOutdoorActivityInfo(int activityId) async {
-    print('in');
     final url = Uri.parse('$baseUrl/api/dog/activities?activity_id=$activityId');
     final response = await http.get(
       url,
@@ -661,7 +727,7 @@ class HttpService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      print('Failed to fetch activity $activityId info');
+      //Failed to fetch activity $activityId info
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -676,7 +742,7 @@ class HttpService {
     if (response.statusCode == 201) {
       return jsonDecode(response.body)['activity_id'];
     } else {
-      print('Failed to create new activity: ${response.statusCode}');
+      //Failed to create new activity: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -689,9 +755,9 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('End activity: $activityId');
+      //End activity: $activityId
     } else {
-      print('Failed to create new activity: ${response.statusCode}');
+      //Failed to create new activity: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -706,7 +772,7 @@ class HttpService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body)['daily_steps_goal'];
     } else {
-      print('Failed to get dog daily steps goal: ${response.statusCode}');
+      //Failed to get dog daily steps goal: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -721,7 +787,7 @@ class HttpService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      print('Failed to get goal info: ${response.statusCode}');
+      //Failed to get goal info: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -739,7 +805,7 @@ class HttpService {
     } else if(response.statusCode == 204) {
       return null;
     } else {
-      print('Failed to get dog goals: ${response.statusCode}');
+      //Failed to get dog goals: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -757,7 +823,7 @@ class HttpService {
     } else if(response.statusCode == 204) {
       return null;
     } else {
-      print('Failed to get dog goals: ${response.statusCode}');
+      //Failed to get dog goals: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -772,7 +838,7 @@ class HttpService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      print('Failed to get goal template info: ${response.statusCode}');
+      //Failed to get goal template info: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -791,10 +857,10 @@ class HttpService {
     );
 
     if (response.statusCode == 201) {
-      print('goal created');
+      //goal created
       return;
     } else {
-      print('Failed to create goal: ${response.statusCode}');
+      //Failed to create goal: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -807,10 +873,10 @@ class HttpService {
     );
 
     if (response.statusCode == 200) {
-      print('goal template $templateId was updated');
+      //goal template $templateId was updated
       return;
     } else {
-      print('failed to update goal template $templateId : ${response.statusCode}');
+      //failed to update goal template $templateId : ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }
@@ -825,7 +891,7 @@ class HttpService {
     if (response.statusCode == 200) {
       return;
     } else {
-      print('Failed to delete goal template $templateId: ${response.statusCode}');
+      //Failed to delete goal template $templateId: ${response.statusCode}
       throw Exception(jsonDecode(response.body)['error']);
     }
   }

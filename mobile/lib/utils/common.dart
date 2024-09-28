@@ -6,7 +6,7 @@ String getTime(int value, {String formatStr = "hh:mm a"}) {
       DateTime.fromMillisecondsSinceEpoch(value * 60 * 1000, isUtc: true));
 }
 
-String getStringDateToOtherFormate(String dateStr,
+String getStringDateToOtherFormat(String dateStr,
     {String inputFormatStr = "dd/MM/yyyy hh:mm aa",
       String outFormatStr = "hh:mm a"}) {
   var format = DateFormat(outFormatStr);

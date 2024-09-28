@@ -43,13 +43,14 @@ class _SignUpStep2ScreenState extends State<SignUpStep2Screen> {
   Future<void> _register(String fullName, String birthdate, String phoneNumber, String email, String password) async {
     try {
       final response = await HttpService.registerUser(email, password, fullName, birthdate, phoneNumber);
-      int user_id = response['user_id'];
-      print('user $user_id was created');
       await PreferencesService.saveUserId(response['user_id']);
-      Navigator.pushNamed(context, AddNewDogScreen.routeName); // Navigate in case of successful user register
+      if(mounted) {
+        Navigator.pushNamed(context, AddNewDogScreen.routeName); // Navigate in case of successful user register
+      }
     } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
     }
   }
 

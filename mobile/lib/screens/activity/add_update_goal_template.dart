@@ -12,7 +12,7 @@ import 'package:mobile/services/validation_methods.dart';
 class AddUpdateGoalTemplateScreen extends StatefulWidget {
   final int? templateId; // Pass templateId for update; null for add
 
-  AddUpdateGoalTemplateScreen({Key? key, this.templateId}) : super(key: key);
+  const AddUpdateGoalTemplateScreen({super.key, this.templateId});
 
   @override
   _AddUpdateGoalTemplateScreenState createState() => _AddUpdateGoalTemplateScreenState();
@@ -44,10 +44,11 @@ class _AddUpdateGoalTemplateScreenState extends State<AddUpdateGoalTemplateScree
       _frequency = goalTemplate['frequency'];
       _selectedCategory = goalTemplate['category'];
     } catch (e) {
-      print('Error loading goal template: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to load goal template.')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to load goal template.')),
+        );
+      }
     } finally {
       setState(() {
         _isLoading = false;
@@ -97,23 +98,30 @@ class _AddUpdateGoalTemplateScreenState extends State<AddUpdateGoalTemplateScree
           _frequency,
           _selectedCategory,
         );
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Goal template added successfully!')),
-        );
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Goal template added successfully!')),
+          );
+        }
       } else {
         // Update existing goal template
         await HttpService.updateGoalTemplate(widget.templateId!, _targetValueController.text);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Goal template updated successfully!')),
-        );
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Goal template updated successfully!')),
+          );
+        }
+      }
+      if(mounted) {
+        Navigator.pop(context);
       }
 
-      Navigator.pop(context);
     } catch (e) {
-      print('Error saving goal template: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to save goal template.')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to save goal template.')),
+        );
+      }
     } finally {
       setState(() {
         _isLoading = false;

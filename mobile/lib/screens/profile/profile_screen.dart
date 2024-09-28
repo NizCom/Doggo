@@ -1,4 +1,3 @@
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/all_about_us/dog_data_screen.dart';
@@ -28,7 +27,6 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> with RouteAware{
-  bool NotificationsToggle = false;
   String? _dogName;
   String? _dogBreed;
   String? _dogWeight;
@@ -62,41 +60,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> with RouteAware{
       final dogId = await PreferencesService.getDogId();
       if (dogId != null) {
         setState(() {
-          _dogImagePath = _getImagePath(dogId); // Fetch the image path based on the dogId
+          _dogImagePath = "assets/images/dog_profile.png";
         });
         _fetchDogInfo();
       }
     } catch (e) {
-      print("Error initializing dogId and image path: ${e.toString()}");
+      //Error initializing dogId and image path
     }
-  }
-
-  // method for exhibition only!
-  String _getImagePath(int dogId) {
-    String imagePath;
-    switch(dogId) {
-      case 28:
-        imagePath = "assets/images/nala_profile.png";
-        break;
-      case 39:
-        imagePath = "assets/images/sherlock_profile.jpg";
-        break;
-      case 38:
-        imagePath = "assets/images/rozy_profile.jpg";
-        break;
-      case 40:
-        imagePath = "assets/images/alfi_profile.jpg";
-        break;
-      case 41:
-        imagePath = "assets/images/tommy_profile.jpg";
-        break;
-      default:
-        imagePath = "assets/images/dog_profile.png";
-        break;
-    }
-
-    return imagePath;
-
   }
 
   Future<void> _logout() async {
@@ -105,17 +75,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> with RouteAware{
       final int? userId = await PreferencesService.getUserId();
 
       if (userId != null) {
-        final response = await HttpService.logout(userId);
+        await HttpService.logout(userId);
         await PreferencesService.clearUserId();
-        Navigator.pushNamed(context, WelcomeScreen.routeName);
+        if(mounted) {
+          Navigator.pushNamed(context, WelcomeScreen.routeName);
+        }
       } else {
-        // Handle the case where userId is null (if needed)
-        print("User ID is null");
+        //User ID is null
       }
 
     } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
     }
   }
 
@@ -143,7 +115,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with RouteAware{
             ),
           ),
         );
-        break;        break;
+        break;
       case '5':
       // Navigate to Personal Data settings or related screen
         Navigator.pushNamed(context, PersonalDataScreen.routeName);
@@ -161,7 +133,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with RouteAware{
         Navigator.pushNamed(context, ContactUsScreen.routeName);
         break;
       default:
-        print('No action defined for tag: $tag');
+        //No action defined for tag
     }
   }
 
@@ -190,10 +162,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> with RouteAware{
         });
       }
     } catch (e) {
-      // Handle any errors and display a SnackBar with the error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch dog info: ${e.toString()}')),
-      );
+      if(mounted) {
+        // Handle any errors and display a SnackBar with the error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to fetch dog info: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -504,109 +478,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> with RouteAware{
               const SizedBox(
                 height: 25,
               ),
-              // Notifications
-              // Container(
-              //   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              //   decoration: BoxDecoration(
-              //       color: AppColors.whiteColor,
-              //       borderRadius: BorderRadius.circular(15),
-              //       boxShadow: const [
-              //         BoxShadow(color: Colors.black12, blurRadius: 2)
-              //       ]),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       const Text(
-              //         "Notification",
-              //         style: TextStyle(
-              //           color: AppColors.blackColor,
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.w700,
-              //         ),
-              //       ),
-              //       const SizedBox(
-              //         height: 8,
-              //       ),
-              //       SizedBox(
-              //         height: 30,
-              //         child: Row(
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: [
-              //             Image.asset("assets/icons/p_notification.png",
-              //                 height: 15, width: 15, fit: BoxFit.contain),
-              //             const SizedBox(
-              //               width: 15,
-              //             ),
-              //             const Expanded(
-              //               child: Text(
-              //                 "Pop-up Notification",
-              //                 style: TextStyle(
-              //                   color: AppColors.blackColor,
-              //                   fontSize: 12,
-              //                 ),
-              //               ),
-              //             ),
-              //             CustomAnimatedToggleSwitch<bool>(
-              //               current: NotificationsToggle,
-              //               values: const [false, true],
-              //               indicatorSize: const Size.square(30.0),
-              //               animationDuration: const Duration(milliseconds: 200),
-              //               animationCurve: Curves.linear,
-              //               onChanged: (b) => setState(() => NotificationsToggle = b),
-              //               iconBuilder: (context, local, global) {
-              //                 return const SizedBox();
-              //               },
-              //               iconsTappable: false,
-              //               wrapperBuilder: (context, global, child) {
-              //                 return Stack(
-              //                   alignment: Alignment.center,
-              //                   children: [
-              //                     Positioned(
-              //                       left: 10.0,
-              //                       right: 10.0,
-              //                       height: 30.0,
-              //                       child: DecoratedBox(
-              //                         decoration: BoxDecoration(
-              //                           gradient: LinearGradient(
-              //                               colors: AppColors.secondaryG),
-              //                           borderRadius: const BorderRadius.all(
-              //                               Radius.circular(30.0)),
-              //                         ),
-              //                       ),
-              //                     ),
-              //                     child,
-              //                   ],
-              //                 );
-              //               },
-              //               foregroundIndicatorBuilder: (context, global) {
-              //                 return SizedBox.fromSize(
-              //                   size: const Size(10, 10),
-              //                   child: const DecoratedBox(
-              //                     decoration: BoxDecoration(
-              //                       color: AppColors.whiteColor,
-              //                       borderRadius: BorderRadius.all(
-              //                           Radius.circular(50.0)),
-              //                       boxShadow: [
-              //                         BoxShadow(
-              //                             color: Colors.black38,
-              //                             spreadRadius: 0.05,
-              //                             blurRadius: 1.1,
-              //                             offset: Offset(0.0, 0.8))
-              //                       ],
-              //                     ),
-              //                   ),
-              //                 );
-              //               },
-              //             ),
-              //           ],
-              //         ),
-              //       )
-              //     ],
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 25,
-              // ),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(

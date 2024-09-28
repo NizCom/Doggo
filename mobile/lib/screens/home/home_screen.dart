@@ -279,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                     ),
                   ],
                 ),
-                ActivitiesGoalsList(ItemsArr: activitiesArr, dogId: dogId, type: 'activity',),
+                ActivitiesGoalsList(itemsArr: activitiesArr, dogId: dogId, type: 'activity',),
                 SizedBox(
                   height: media.width * 0.1,
                 ),
