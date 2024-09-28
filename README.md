@@ -145,6 +145,20 @@ docker run -d -p 80:5000 --name backend-demo your-dockerhub-username/backend-dem
 
 This will expose the Flask application on port 80 of your EC2 instance.
 
+### Install the App
+1. Build the Mobile Project: Open the project in your terminal and run the following command to build the APK:
+   ```bash
+   flutter build apk --release
+   ```
+2. Locate the APK: Once the build is complete, find the APK at the following path:
+   ```bash
+   build/app/outputs/flutter-apk/app-release.apk
+   ```
+3. Install the App:
+   - Open the APK file on your Android device.
+   - If prompted, enable installation from unknown sources in your device settings.
+   - Follow the on-screen instructions to complete the installation.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Project Builders
