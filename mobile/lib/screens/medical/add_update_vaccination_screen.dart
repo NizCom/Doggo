@@ -117,7 +117,7 @@ class _AddUpdateVaccinationScreenState extends State<AddUpdateVaccinationScreen>
           final nextVaccinationDate = DateTime.parse(_nextVaccinationController.text);
           if (nextVaccinationDate.isBefore(_selectedVaccinationDate!)) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Next Vaccination Date must be after Vaccination Date.')),
+              const SnackBar(content: Text('Next Vaccination Date must be after Vaccination Date.')),
             );
             return;
           }
