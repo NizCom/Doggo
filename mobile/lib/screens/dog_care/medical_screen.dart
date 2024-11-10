@@ -4,6 +4,8 @@ import 'package:mobile/utils/app_colors.dart';
 import 'package:mobile/screens/map/pension_vet_map_screen.dart';
 import 'package:mobile/screens/medical/medical_records_screen.dart';
 
+import '../medical/vaccinations_screen.dart';
+
 class MedicalScreen extends StatefulWidget {
   static String routeName = "/MedicalScreen";
 
@@ -17,7 +19,7 @@ class _MedicalScreenState extends State<MedicalScreen> {
 
   List medicalArr = [
     {"image": "assets/icons/medical_icon.png", "name": "Veterinarian Information", "tag": "1"},
-    // {"image": "assets/icons/medical_icon.png", "name": "Vaccinations", "tag": "2"},
+    {"image": "assets/icons/medical_icon.png", "name": "Vaccinations", "tag": "2"},
     {"image": "assets/icons/medical_icon.png", "name": "Medical Records", "tag": "3"},
   ];
 
@@ -38,17 +40,17 @@ class _MedicalScreenState extends State<MedicalScreen> {
             ),
           ),
         );
-        break;        break;
+        break;
       case '2':
       // Navigate to vaccinations screen
-      //   Navigator.pushNamed(context, VaccinationsScreen.routeName);
+        Navigator.pushNamed(context, VaccinationsScreen.routeName);
         break;
       case '3':
       // Navigate to Medical records screen
         Navigator.pushNamed(context, MedicalRecordsScreen.routeName);
         break;
       default:
-        print('No action defined for tag: $tag');
+        //No action defined for tag
     }
   }
 

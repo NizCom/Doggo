@@ -5,12 +5,12 @@ class FrequencySelector extends StatefulWidget {
   final ValueChanged<String> onFrequencyChanged;
   final bool isReadOnly;
 
-  FrequencySelector({
-    Key? key,
+  const FrequencySelector({
+    super.key,
     required this.selectedFrequency,
     required this.onFrequencyChanged,
     this.isReadOnly = false,
-  }) : super(key: key);
+  });
 
   @override
   _FrequencySelectorState createState() => _FrequencySelectorState();

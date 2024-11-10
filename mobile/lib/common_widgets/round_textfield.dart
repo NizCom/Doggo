@@ -78,7 +78,7 @@ class RoundTextField extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5, left: 12),
             child: Text(
               errorText!,
-              style: TextStyle(color: Colors.red, fontSize: 12),
+              style: const TextStyle(color: Colors.red, fontSize: 12),
             ),
           ),
       ],

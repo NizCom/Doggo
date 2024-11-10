@@ -14,7 +14,7 @@ class DogDataScreen extends StatefulWidget {
 
   final bool editMode;
 
-  const DogDataScreen({Key? key, this.editMode = false}) : super(key: key);
+  const DogDataScreen({super.key, this.editMode = false});
 
   @override
   _DogDataScreenState createState() => _DogDataScreenState();
@@ -86,7 +86,6 @@ class _DogDataScreenState extends State<DogDataScreen> {
         });
       }
     } catch (e) {
-      print('Error fetching dog data: $e');
       setState(() {
         _dogName = 'Error loading data';
         _dogBreed = 'Error loading data';
@@ -139,15 +138,18 @@ class _DogDataScreenState extends State<DogDataScreen> {
           _weightError = null;
           _descriptionError = null;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Dog profile updated successfully")),
-        );
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Dog profile updated successfully")),
+          );
+        }
       }
     } catch (e) {
-      print('Failed to update profile: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update dog profile: ${e.toString()}")),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to update dog profile: ${e.toString()}")),
+        );
+      }
     }
   }
 
@@ -260,7 +262,13 @@ class _DogDataScreenState extends State<DogDataScreen> {
                 ),
                 const SizedBox(height: 10),
                 _isEditing?
-                DateSelector(birthdateController: _dateOfBirthController) :
+                DateSelector(
+                  dateController: _dateOfBirthController,
+                  hintText: "Date of Birth",
+                  initialDate: _dogDateOfBirth ?? DateTime(2000, 1, 1),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                ) :
                 RoundTextField(
                   title: "Date of Birth",
                   hintText: _dogDateOfBirth == null ? "Error retrieving date of birth" : _dogDateOfBirth.toString(),

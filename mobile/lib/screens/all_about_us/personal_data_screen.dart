@@ -27,7 +27,6 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
   String _userEmail = 'Loading...';
   String _userPhoneNumber = 'Loading...';
   DateTime? _userDateOfBirth;
-  final String _oldPassword = ''; // Store the current password
 
   String? _nameError;
   String? _emailError;
@@ -72,7 +71,6 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
         });
       }
     } catch (e) {
-      print(e);
       setState(() {
         _userName = 'Error loading data';
         _userEmail = 'Error loading data';
@@ -128,14 +126,14 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
         // Determine which password to send
         String password = _isChangingPassword
             ? _newPasswordController.text
-            : _oldPassword; // Send empty password if not changing
+            : ''; // Send empty password if not changing
 
         await HttpService.updateUserProfile(
           _userId!,
           _emailController.text,
           password,
           _nameController.text,
-          _userDateOfBirth!,
+          _dateOfBirthController.text,
           _phoneNumberController.text,
         );
 
@@ -148,17 +146,25 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
           _isChangingPassword = false;
           // Clear all error messages
           _emailError = _phoneError = _dateError = _oldPasswordError = _newPasswordError = _confirmPasswordError = null;
+          // Clear password fields
+          _oldPasswordController.text = '';
+          _newPasswordController.text = '';
+          _confirmPasswordController.text = '';
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Profile updated successfully")),
-        );
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Profile updated successfully")),
+          );
+        }
+
       }
     } catch (e) {
-      print('Failed to update profile: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update profile: ${e.toString()}")),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to update profile: ${e.toString()}")),
+        );
+      }
     }
   }
 
@@ -255,7 +261,13 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                 ),
                 const SizedBox(height: 15),
                 _isEditing?
-                DateSelector(birthdateController: _dateOfBirthController) :
+                DateSelector(
+                  dateController: _dateOfBirthController,
+                  hintText: "Date of Birth",
+                  initialDate: _userDateOfBirth ?? DateTime(2000, 1, 1),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                ) :
                 RoundTextField(
                   title: "Date of Birth",
                   hintText: _userDateOfBirth == null ? "Error retrieving date of birth" : _userDateOfBirth.toString(),

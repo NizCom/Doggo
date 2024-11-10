@@ -4,7 +4,7 @@ import 'package:mobile/utils/app_colors.dart';
 class ActivityCirclesWidget extends StatefulWidget {
   final Function(String activityType) onActivitySelected;
 
-  const ActivityCirclesWidget({Key? key, required this.onActivitySelected}) : super(key: key);
+  const ActivityCirclesWidget({super.key, required this.onActivitySelected});
 
   @override
   _ActivityCirclesWidgetState createState() => _ActivityCirclesWidgetState();

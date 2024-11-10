@@ -160,7 +160,7 @@ class _ActivitiesGoalsHistoryScreenState
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ActivitiesGoalsList(
-                    ItemsArr: itemsArr,
+                    itemsArr: itemsArr,
                     dogId: widget.dogId,
                     type: widget.type, // Pass type to the ActivitiesList
                   ),

@@ -87,7 +87,7 @@ class ContactUsScreen extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Email: $email", style: TextStyle(color: AppColors.grayColor)),
+            Text("Email: $email", style: const TextStyle(color: AppColors.grayColor)),
           ],
         ),
         contentPadding: const EdgeInsets.all(5),

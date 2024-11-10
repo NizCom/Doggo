@@ -150,7 +150,13 @@ class _AddNewDogScreenState extends State<AddNewDogScreen> {
                   },
                 ),
                 const SizedBox(height: 15),
-                DateSelector(birthdateController: _birthdateController),
+              DateSelector(
+                dateController: _birthdateController,
+                hintText: "Date of Birth",
+                initialDate: DateTime(2000, 1, 1),
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+              ),
                 const SizedBox(height: 15),
                 RoundTextField(
                   textEditingController: _weightController,

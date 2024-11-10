@@ -9,6 +9,8 @@ import 'dart:async';
 import 'date_circles.dart';
 
 class DogActivityStatus extends StatefulWidget {
+  const DogActivityStatus({super.key});
+
   @override
   _DogActivityStatusState createState() => _DogActivityStatusState();
 }
@@ -49,41 +51,13 @@ class _DogActivityStatusState extends State<DogActivityStatus> with SingleTicker
       if (dogId != null) {
         setState(() {
           _dogId = dogId;
-          _dogImagePath = _getImagePath(dogId); // Fetch the image path based on the dogId
+          _dogImagePath = "assets/images/dog_profile.png";
         });
         _fetchActivityStatus(selectedDate);
       }
     } catch (e) {
-      print("Error initializing dogId and image path: ${e.toString()}");
+      //Error initializing dogId and image path
     }
-  }
-
-  // method for exhibition only!
-  String _getImagePath(int dogId) {
-    String imagePath;
-    switch(dogId) {
-      case 28:
-        imagePath = "assets/images/nala_profile.png";
-        break;
-      case 39:
-        imagePath = "assets/images/sherlock_profile.jpg";
-        break;
-      case 38:
-        imagePath = "assets/images/rozy_profile.jpg";
-        break;
-      case 40:
-        imagePath = "assets/images/alfi_profile.jpg";
-        break;
-      case 41:
-        imagePath = "assets/images/tommy_profile.jpg";
-        break;
-      default:
-        imagePath = "assets/images/dog_profile.png";
-        break;
-    }
-
-    return imagePath;
-
   }
 
   Future<void> _fetchActivityStatus(DateTime date) async {
@@ -111,7 +85,7 @@ class _DogActivityStatusState extends State<DogActivityStatus> with SingleTicker
         _controller.forward(from: 0);
       });
     } catch (e) {
-      print("Error fetching activity status: ${e.toString()}");
+      //Error fetching activity status
     }
   }
 

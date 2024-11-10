@@ -4,6 +4,8 @@ import 'package:mobile/services/ble_service.dart';
 
 class BleConnectionScreen extends StatefulWidget {
   static const routeName = '/BLEConnectionScreen';
+
+  const BleConnectionScreen({super.key});
   @override
   _BleConnectionScreenState createState() => _BleConnectionScreenState();
 }

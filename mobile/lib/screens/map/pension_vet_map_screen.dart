@@ -59,13 +59,11 @@ class _PensionVetMapScreenState extends State<PensionVetMapScreen> {
       switch (_screenType) {
         case "pension":
           fetchedInfo = await HttpService.getPension(dogId);
-          print(fetchedInfo);
           break;
         case "vet":
           fetchedInfo = await HttpService.getVet(dogId);
           break;
         default:
-          print('Unknown screen type: $_screenType');
           _resetData();
           _focusOnUserLocation();
           return;
@@ -96,7 +94,6 @@ class _PensionVetMapScreenState extends State<PensionVetMapScreen> {
       }
     } catch (e) {
       // Handle any errors during the fetch process
-      print('Error fetching $_screenType data: $e');
       _resetData();
       _focusOnUserLocation();
     }
@@ -127,7 +124,7 @@ class _PensionVetMapScreenState extends State<PensionVetMapScreen> {
         }
       });
     } catch (e) {
-      print('Error getting user location: $e');
+      //Error getting user location
     }
   }
 
@@ -192,7 +189,7 @@ class _PensionVetMapScreenState extends State<PensionVetMapScreen> {
           );
           break;
         default:
-          print('Unknown screen type: $_screenType');
+          //Unknown screen type
           return;
       }
 
@@ -205,17 +202,20 @@ class _PensionVetMapScreenState extends State<PensionVetMapScreen> {
         _phoneError = null;
       });
 
-      // Show a success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("$_screenType details updated successfully")),
-      );
+      if(mounted) {
+        // Show a success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("$_screenType details updated successfully")),
+        );
+      }
 
     } catch (e) {
-      // Handle any errors during the save process
-      print('Failed to update $_screenType details: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update $_screenType details: ${e.toString()}")),
-      );
+      if(mounted) {
+        // Handle any errors during the save process
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to update $_screenType details: ${e.toString()}")),
+        );
+      }
     }
   }
 

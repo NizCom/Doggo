@@ -15,12 +15,12 @@ class SetFavoritePlace extends StatefulWidget {
   final bool editMode;
 
   const SetFavoritePlace({
-    Key? key,
+    super.key,
     required this.dogId,
     required this.placeType,
     this.inCompleteRegister = false,
     this.editMode = true
-  }) : super(key: key);
+  });
 
   static String routeName = "/SetFavoritePlaceScreen";
 
@@ -48,7 +48,7 @@ class _SetFavoritePlaceState extends State<SetFavoritePlace> {
         _mapController.move(_selectedPosition!, 18.0);
       });
     } catch (e) {
-      print("Error getting location: $e");
+      //Error getting location
     }
   }
 
@@ -73,10 +73,12 @@ class _SetFavoritePlaceState extends State<SetFavoritePlace> {
         });
       }
     } catch (e) {
-      // Show error message in a SnackBar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch favorite place: ${e.toString()}')),
-      );
+      if(mounted) {
+        // Show error message in a SnackBar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to fetch favorite place: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -126,26 +128,34 @@ class _SetFavoritePlaceState extends State<SetFavoritePlace> {
         widget.placeType,
       );
 
-      // If successful, either move to the next screen or pop the current one
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Place added successfully')),
-      );
+      if(mounted) {
+        // If successful, either move to the next screen or pop the current one
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Place added successfully')),
+        );
+      }
 
       if (widget.inCompleteRegister == true) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConfigureCollarScreen(dogId: widget.dogId),
-          ),
-        );
+        if(mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConfigureCollarScreen(dogId: widget.dogId),
+            ),
+          );
+        }
       } else {
-        Navigator.pop(context);
+        if(mounted) {
+          Navigator.pop(context);
+        }
       }
     } catch (e) {
-      // Show error message in a SnackBar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to add place: ${e.toString()}')),
-      );
+      if(mounted) {
+        // Show error message in a SnackBar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to add place: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -154,7 +164,7 @@ class _SetFavoritePlaceState extends State<SetFavoritePlace> {
       _markers = [
         Marker(
           point: _selectedPosition ?? _currentPosition,
-          child: Icon(Icons.location_pin, color: Colors.red, size: 40),
+          child: const Icon(Icons.location_pin, color: Colors.red, size: 40),
           width: 40,
           height: 40,
         ),
@@ -173,7 +183,6 @@ class _SetFavoritePlaceState extends State<SetFavoritePlace> {
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: SafeArea(

@@ -10,11 +10,11 @@ class StartNewActivityScreen extends StatefulWidget {
   final int? currentActivityId;
 
   const StartNewActivityScreen({
-    Key? key,
+    super.key,
     required this.activityType,
     required this.dogId,
     this.currentActivityId,
-  }) : super(key: key);
+  });
 
   @override
   _StartNewActivityScreenState createState() => _StartNewActivityScreenState();
@@ -28,7 +28,6 @@ class _StartNewActivityScreenState extends State<StartNewActivityScreen> {
   void initState() {
     super.initState();
     _activityId = widget.currentActivityId; // Initialize with the passed activity ID
-    print('current activity: ${widget.currentActivityId}');
   }
 
   void _startActivity() async {
@@ -51,7 +50,6 @@ class _StartNewActivityScreenState extends State<StartNewActivityScreen> {
         );
       }
     } catch (e) {
-      print('Error starting activity: $e');
       setState(() => _isLoading = false);
       if (mounted) {
         _showErrorDialog('Failed to start activity. $e');
@@ -80,9 +78,11 @@ class _StartNewActivityScreenState extends State<StartNewActivityScreen> {
         );
       }
 
-      Navigator.of(context).pop();
+      if(mounted) {
+        Navigator.of(context).pop();
+      }
+
     } catch (e) {
-      print('Error ending activity: $e');
       setState(() => _isLoading = false);
       if (mounted) {
         _showErrorDialog('Failed to end activity. Please try again.');

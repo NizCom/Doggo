@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:mobile/screens/add_new_dog/add_new_dog_screen.dart';
 import 'package:mobile/screens/all_about_us/dog_data_screen.dart';
 import 'package:mobile/screens/all_about_us/personal_data_screen.dart';
-import 'package:mobile/screens/auth/forgot_password_screen.dart';
 import 'package:mobile/screens/auth/login_screen.dart';
 import 'package:mobile/screens/auth/signup_step1_screen.dart';
 import 'package:mobile/screens/auth/signup_step2_screen.dart';
@@ -18,6 +17,7 @@ import 'package:mobile/screens/home/home_screen.dart';
 import 'package:mobile/screens/map/map_screen.dart';
 import 'package:mobile/screens/medical/add_update_medical_record_screen.dart';
 import 'package:mobile/screens/medical/medical_records_screen.dart';
+import 'package:mobile/screens/medical/vaccinations_screen.dart';
 import 'package:mobile/screens/other/contact_us_screen.dart';
 import 'package:mobile/screens/other/faq_screen.dart';
 import 'package:mobile/screens/profile/profile_screen.dart';
@@ -31,7 +31,6 @@ final Map<String, WidgetBuilder> routes = {
   LoginScreen.routeName: (context) => const LoginScreen(),
   SignUpStep1Screen.routeName: (context) => const SignUpStep1Screen(),
   SignUpStep2Screen.routeName: (context) => const SignUpStep2Screen(),
-  ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
   //add new dog
   AddNewDogScreen.routeName: (context) => const AddNewDogScreen(),
   //menu
@@ -49,20 +48,22 @@ final Map<String, WidgetBuilder> routes = {
   //medical
   MedicalScreen.routeName: (context) => const MedicalScreen(),
   //medical records
-  MedicalRecordsScreen.routeName: (context) => MedicalRecordsScreen(),
+  MedicalRecordsScreen.routeName: (context) => const MedicalRecordsScreen(),
   AddUpdateMedicalRecordScreen.routeName: (context) => AddUpdateMedicalRecordScreen(date: DateTime.now(), dogId: '',),
+  //vaccinations
+  VaccinationsScreen.routeName: (context) => const VaccinationsScreen(),
   //faq
-  FaqScreen.routeName : (context) => FaqScreen(),
+  FaqScreen.routeName : (context) => const FaqScreen(),
   //contact us
   ContactUsScreen.routeName : (context) => const ContactUsScreen(),
   //home
   HomeScreen.routeName: (context) => const HomeScreen(),
   //activity
-  ActivityScreen.routeName: (context) => ActivityScreen(),
+  ActivityScreen.routeName: (context) => const ActivityScreen(),
   //social network
-  SocialNetworkScreen.routeName: (context) => SocialNetworkScreen(),
+  SocialNetworkScreen.routeName: (context) => const SocialNetworkScreen(),
   MapScreen.routeName: (context) => const MapScreen(),
   //ble connection
-  BleConnectionScreen.routeName: (context) => BleConnectionScreen(),
+  BleConnectionScreen.routeName: (context) => const BleConnectionScreen(),
 
 };

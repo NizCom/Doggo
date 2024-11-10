@@ -62,7 +62,6 @@ class _GoalsTemplatesScreenState extends State<GoalsTemplatesScreen> with RouteA
         }
       });
     } catch (e) {
-      print("Error fetching goal templates: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to fetch goal templates. Please try again.')),
@@ -97,7 +96,7 @@ class _GoalsTemplatesScreenState extends State<GoalsTemplatesScreen> with RouteA
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddUpdateGoalTemplateScreen(templateId: null,), // null for add
+                  builder: (context) => const AddUpdateGoalTemplateScreen(templateId: null,), // null for add
                 ),
               );
             },
@@ -118,7 +117,7 @@ class _GoalsTemplatesScreenState extends State<GoalsTemplatesScreen> with RouteA
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ActivitiesGoalsList(
-                  ItemsArr: templatesArr,
+                  itemsArr: templatesArr,
                   dogId: widget.dogId,
                   type: 'template',
                 ),

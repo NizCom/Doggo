@@ -73,7 +73,7 @@ class _MapScreenState extends State<MapScreen> {
         _updateUserMarker();
       });
     } catch (e) {
-      print("Error getting location: $e");
+      //Error getting location
     }
   }
 
@@ -125,10 +125,12 @@ class _MapScreenState extends State<MapScreen> {
         }
       });
     } catch (e) {
-      // Display an error message using ScaffoldMessenger
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading markers: ${e.toString()}')),
-      );
+      if(mounted) {
+        // Display an error message using ScaffoldMessenger
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading markers: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -190,7 +192,7 @@ class _MapScreenState extends State<MapScreen> {
                     onMorePressed: () => _showAllCategories(context),
                   ),
                   Expanded(
-                    child: dogId != null ? FavoritePlacesList(dogId: dogId!,) : SizedBox(),
+                    child: dogId != null ? FavoritePlacesList(dogId: dogId!,) : const SizedBox(),
                   ),
                 ],
               ),

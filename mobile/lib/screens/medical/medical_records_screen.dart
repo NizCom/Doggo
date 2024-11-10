@@ -9,6 +9,8 @@ import 'package:mobile/screens/medical/add_update_medical_record_screen.dart';
 class MedicalRecordsScreen extends StatefulWidget {
   static const String routeName = "/MedicalRecordsScreen";
 
+  const MedicalRecordsScreen({super.key});
+
   @override
   _MedicalRecordsScreenState createState() => _MedicalRecordsScreenState();
 }
@@ -35,13 +37,14 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
           _events = events;
         });
       } else {
-        print('Dog ID is null');
+        //Dog id is null
       }
     } catch (e) {
-      print('Failed to load events for month: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error loading events. Please try again later.')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error loading events. Please try again later.')),
+        );
+      }
     }
   }
 
@@ -55,13 +58,14 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
           _dailyRecords = dailyRecords;
         });
       } else {
-        print('Dog ID is null');
+        //Dog ID is null
       }
     } catch (e) {
-      print('Failed to load daily records: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error loading daily records. Please try again later.')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error loading daily records. Please try again later.')),
+        );
+      }
     }
   }
 
@@ -103,23 +107,27 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
   Future<void> _addNewRecord() async {
     final dogId = await PreferencesService.getDogId();
     if (dogId != null) {
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AddUpdateMedicalRecordScreen(
-            date: _selectedDay ?? DateTime.now(),
-            dogId: dogId.toString(),
-            isUpdate: false,
+      if(mounted) {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddUpdateMedicalRecordScreen(
+              date: _selectedDay ?? DateTime.now(),
+              dogId: dogId.toString(),
+              isUpdate: false,
+            ),
           ),
-        ),
-      );
-      if (result == true) {
-        _loadDailyRecords(_selectedDay ?? DateTime.now());
+        );
+        if (result == true) {
+          _loadDailyRecords(_selectedDay ?? DateTime.now());
+        }
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error: Unable to retrieve dog ID')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error: Unable to retrieve dog ID')),
+        );
+      }
     }
   }
 
@@ -127,24 +135,28 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
     final dogId = await PreferencesService.getDogId();
     if (dogId != null) {
       DateTime recordDateTime = DateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", 'en_US').parse(record['record_datetime'], true).toLocal();
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AddUpdateMedicalRecordScreen(
-            date: recordDateTime,
-            dogId: dogId.toString(),
-            isUpdate: true,
-            recordId: record['record_id'],
+      if(mounted) {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddUpdateMedicalRecordScreen(
+              date: recordDateTime,
+              dogId: dogId.toString(),
+              isUpdate: true,
+              recordId: record['record_id'],
+            ),
           ),
-        ),
-      );
-      if (result == true) {
-        _loadDailyRecords(_selectedDay ?? DateTime.now());
+        );
+        if (result == true) {
+          _loadDailyRecords(_selectedDay ?? DateTime.now());
+        }
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error: Unable to retrieve dog ID')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error: Unable to retrieve dog ID')),
+        );
+      }
     }
   }
 
@@ -156,14 +168,13 @@ class _MedicalRecordsScreenState extends State<MedicalRecordsScreen> {
         await _loadDailyRecords(_selectedDay!);
       }
     } catch (e) {
-      print('Failed to remove record: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error removing record. Please try again later.')),
-      );
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error removing record. Please try again later.')),
+        );
+      }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {

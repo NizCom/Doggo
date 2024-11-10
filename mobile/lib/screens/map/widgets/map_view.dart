@@ -16,7 +16,7 @@ class MapView extends StatelessWidget {
   final Function(LatLng)? onTap;
 
   const MapView({
-    Key? key,
+    super.key,
     required this.mapController,
     required this.markers,
     required this.currentPosition,
@@ -26,7 +26,7 @@ class MapView extends StatelessWidget {
     this.showClearMarkersButton = true, // Default to showing the button
     this.showSearchBar = true, //  Default to showing the search bar
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +62,11 @@ class MapView extends StatelessWidget {
               FloatingActionButton(
                 heroTag: 'updateLocation',
                 onPressed: onUpdateLocation,
-                child: Icon(Icons.my_location, size: 20),
                 backgroundColor: AppColors.primaryColor1.withOpacity(0.8),
                 mini: true,
+                child: const Icon(Icons.my_location, size: 20),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               FloatingActionButton(
                 heroTag: 'rotateNorth',
                 onPressed: () => mapController.rotate(0),

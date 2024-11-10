@@ -13,6 +13,8 @@ import 'package:mobile/screens/activity/activities_goals_history.dart';
 class ActivityScreen extends StatefulWidget {
   static String routeName = "/ActivityScreen";
 
+  const ActivityScreen({super.key});
+
   @override
   _ActivityScreenState createState() => _ActivityScreenState();
 }
@@ -78,7 +80,6 @@ class _ActivityScreenState extends State<ActivityScreen> with RouteAware{
           });
         }
       } catch (e) {
-        print('Error fetching latest goals: $e');
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Failed to fetch goals. Please try again.')),
@@ -186,7 +187,7 @@ class _ActivityScreenState extends State<ActivityScreen> with RouteAware{
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   color: AppColors.primaryColor1,
                   onPressed: () { // navigate to GoalsTemplatesScreen
                     Navigator.push(
@@ -200,7 +201,7 @@ class _ActivityScreenState extends State<ActivityScreen> with RouteAware{
                 ),
                 SizedBox(width: media.width * 0.35),
                 IconButton(
-                  icon: Icon(Icons.open_in_new),
+                  icon: const Icon(Icons.open_in_new),
                   color: AppColors.primaryColor1,
                   onPressed: () {
                     Navigator.push(
@@ -214,7 +215,7 @@ class _ActivityScreenState extends State<ActivityScreen> with RouteAware{
                 ),
               ],
             ),
-            ActivitiesGoalsList(ItemsArr: goalsArr, dogId: _dogId, type: 'goal',),
+            ActivitiesGoalsList(itemsArr: goalsArr, dogId: _dogId, type: 'goal',),
             SizedBox(
               height: media.width * 0.1,
             ),

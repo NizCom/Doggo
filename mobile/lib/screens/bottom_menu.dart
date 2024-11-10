@@ -22,9 +22,9 @@ class _BottomMenuState extends State<BottomMenu> {
   final List<Widget> _widgetOptions = <Widget>[
     const HomeScreen(),
     const UserProfileScreen(),
-    ActivityScreen(),
+    const ActivityScreen(),
     const MapScreen(),
-     SocialNetworkScreen(),
+    const SocialNetworkScreen(),
   ];
 
   @override
@@ -141,12 +141,11 @@ class TabButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const TabButton(
-      {Key? key,
+      {super.key,
         required this.icon,
         required this.selectIcon,
         required this.isActive,
-        required this.onTap})
-      : super(key: key);
+        required this.onTap});
 
   @override
   Widget build(BuildContext context) {

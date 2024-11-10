@@ -6,7 +6,7 @@ import 'package:mobile/services/http_service.dart';
 class BcsPieChart extends StatefulWidget {
   final int dogId;  // Pass the dogId to fetch the BCS
 
-  const BcsPieChart({Key? key, required this.dogId}) : super(key: key);
+  const BcsPieChart({super.key, required this.dogId});
 
   @override
   _BcsPieChartState createState() => _BcsPieChartState();
@@ -39,7 +39,6 @@ class _BcsPieChartState extends State<BcsPieChart> {
         currentScore = null;
         isLoading = false;
       });
-      print("Failed to fetch BCS: $e");
     }
   }
 

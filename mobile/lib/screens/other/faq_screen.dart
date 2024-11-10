@@ -5,6 +5,8 @@ import 'package:mobile/utils/app_colors.dart';
 class FaqScreen extends StatefulWidget {
   static String routeName = "/FaqScreen";
 
+  const FaqScreen({super.key});
+
   @override
   _FaqScreenState createState() => _FaqScreenState();
 }
@@ -31,7 +33,6 @@ class _FaqScreenState extends State<FaqScreen> {
       setState(() {
         _isLoading = false;
       });
-      print('Error fetching questions: $e');
     }
   }
 
@@ -46,7 +47,7 @@ class _FaqScreenState extends State<FaqScreen> {
         _faqAnswers[questionId] = cleanedAnswer;
       });
     } catch (e) {
-      print('Error fetching answer: $e');
+      //Error fetching answer
     }
   }
 

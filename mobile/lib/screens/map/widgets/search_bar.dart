@@ -8,7 +8,7 @@ import 'package:mobile/utils/app_colors.dart';
 class PlaceSearchBar extends StatelessWidget {
   final Function(LatLng, String) onSearch;
 
-  PlaceSearchBar({Key? key, required this.onSearch}) : super(key: key);
+  PlaceSearchBar({super.key, required this.onSearch});
 
   final TextEditingController _searchController = TextEditingController();
   final String _nominatimUrl = 'https://nominatim.openstreetmap.org/search';
@@ -50,8 +50,8 @@ class PlaceSearchBar extends StatelessWidget {
             controller: _searchController,
             decoration: InputDecoration(
               hintText: 'Search for a place',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.search),
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.search),
               fillColor: AppColors.whiteColor.withOpacity(0.7),
               filled: true,
             ),

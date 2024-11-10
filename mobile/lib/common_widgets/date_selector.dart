@@ -1,21 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../common_widgets/round_textfield.dart';
+import 'package:mobile/common_widgets/round_textfield.dart';
 
 class DateSelector extends StatelessWidget {
-  final TextEditingController birthdateController;
+  final TextEditingController dateController;
+  final String hintText;
+  final DateTime initialDate;
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final void Function(DateTime)? onDateSelected;
 
-  const DateSelector({Key? key, required this.birthdateController}) : super(key: key);
+  const DateSelector({
+    super.key,
+    required this.dateController,
+    required this.hintText,
+    required this.initialDate,
+    required this.firstDate,
+    required this.lastDate,
+    this.onDateSelected,
+  });
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
-    if (picked != null && picked != DateTime.now()) {
-      birthdateController.text = DateFormat('yyyy-MM-dd').format(picked);
+    if (picked != null) {
+      dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+
+      if (onDateSelected != null) {
+        onDateSelected!(picked);
+      }
     }
   }
 
@@ -25,8 +42,8 @@ class DateSelector extends StatelessWidget {
       onTap: () => _selectDate(context),
       child: AbsorbPointer(
         child: RoundTextField(
-          textEditingController: birthdateController,
-          hintText: "Date Of Birth",
+          textEditingController: dateController,
+          hintText: hintText,
           icon: 'assets/icons/date_icon.png',
           textInputType: TextInputType.datetime,
           isObscureText: false,

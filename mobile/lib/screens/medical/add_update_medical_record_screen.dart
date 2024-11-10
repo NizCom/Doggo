@@ -14,12 +14,12 @@ class AddUpdateMedicalRecordScreen extends StatefulWidget {
   final int? recordId;
 
   const AddUpdateMedicalRecordScreen({
-    Key? key,
+    super.key,
     required this.date,
     required this.dogId,
     this.isUpdate = false,
     this.recordId,
-  }) : super(key: key);
+  });
 
   @override
   _AddUpdateMedicalRecordScreenState createState() => _AddUpdateMedicalRecordScreenState();
@@ -62,9 +62,11 @@ class _AddUpdateMedicalRecordScreenState extends State<AddUpdateMedicalRecordScr
         _descriptionController.text = fetchedData['description'];
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading medical record: $e')),
-      );
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading medical record: $e')),
+        );
+      }
     }
   }
 
@@ -91,11 +93,16 @@ class _AddUpdateMedicalRecordScreenState extends State<AddUpdateMedicalRecordScr
           await HttpService.addMedicalRecord(widget.dogId, recordData);
         }
 
-        Navigator.of(context).pop(true);
+        if(mounted){
+          Navigator.of(context).pop(true);
+        }
+
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving medical record: $e')),
-        );
+        if(mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error saving medical record: $e')),
+          );
+        }
       }
     }
   }
