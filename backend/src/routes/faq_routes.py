@@ -1,7 +1,5 @@
 import psycopg2
-from flask import Blueprint, request, jsonify
-
-from src.utils.config import load_database_config
+from flask import Blueprint, request, jsonify, g
 from src.utils.helpers import *
 
 faq_routes = Blueprint('faq_routes', __name__)
@@ -12,15 +10,12 @@ def get_faq_questions():
     get_questions_query = f"SELECT faq_id, question FROM {FAQ_TABLE};"
 
     try:
-        db = load_database_config()
+        with g.db_conn.cursor() as cursor:
+            cursor.execute(get_questions_query)
+            faq_questions = cursor.fetchall()
 
-        with psycopg2.connect(**db) as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(get_questions_query)
-                faq_questions = cursor.fetchall()
-
-                # Convert the list of tuples into a dictionary
-                faq_dict = {faq_id: question for faq_id, question in faq_questions}
+            # Convert the list of tuples into a dictionary
+            faq_dict = {faq_id: question for faq_id, question in faq_questions}
 
     except (Exception, ValueError, psycopg2.DatabaseError) as error:
         return jsonify({"error": str(error)}), HTTP_400_BAD_REQUEST
@@ -34,12 +29,9 @@ def get_faq_answer():
     get_answer_query = f"SELECT answer FROM {FAQ_TABLE} WHERE faq_id = %s;"
 
     try:
-        db = load_database_config()
-
-        with psycopg2.connect(**db) as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(get_answer_query, (faq_id,))
-                faq_answer = cursor.fetchone()[0]
+        with g.db_conn.cursor() as cursor:
+            cursor.execute(get_answer_query, (faq_id,))
+            faq_answer = cursor.fetchone()[0]
 
     except (Exception, ValueError, psycopg2.DatabaseError) as error:
         return jsonify({"error": str(error)}), HTTP_400_BAD_REQUEST
